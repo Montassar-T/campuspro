@@ -6,7 +6,7 @@ import { deleteWorker } from "../features/workers";
 
 const Workers = () => {
   const dispatch = useDispatch();
-  const { workers , error } = useSelector((state) => state.workers);
+  const { workers } = useSelector((state) => state.workers);
 
   useEffect(() => {
     dispatch(fetchWorkers());
@@ -21,7 +21,7 @@ const Workers = () => {
   return (
     <div className="container">
       <h1 className="font-bold text-2xl">Workers</h1>
-      <Table data={workers}  />
+      <Table data={workers} deleteItem={deleteWorker} dispatch={dispatch}  />
       
     </div>
   );

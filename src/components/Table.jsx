@@ -3,13 +3,13 @@ import trash from '../assets/icons/trash.svg';
 import edit from '../assets/icons/edit.svg';
 
 
-const Table = ({data})=> {
+const Table = ({data,deleteItem,dispatch})=> {
 
 
       
-  const deleteItem =  (id) => {
+  const handleDelete =  (id) => {
     try {
-       dispatch(deleteWorker(id)); // Dispatch deleteWorker with the worker's ID
+       dispatch(deleteItem(id)); 
       console.log("Worker deleted successfully");
     } catch (error) {
       console.error("Error deleting worker:", error);
@@ -33,13 +33,10 @@ const Table = ({data})=> {
                 if(header!='_id')
                { return(
                   
-                    <th>{header}</th>
+                    <th>{header.charAt(0).toUpperCase()+header.slice(1)}</th>
                 )}
             })}
-            {/* <th>First Name</th>
-            <th>Last Name</th>
-            <th>CIN</th>
-            <th>Fonction</th> */}
+          
             <th>Actions</th>
           </tr>
         </thead>
@@ -53,7 +50,7 @@ const Table = ({data})=> {
                 <td>{worker.fonction}</td>
                 <td className="flex gap-2 buttons">
                     <img src={edit} alt="" />
-                    <img onClick={() => deleteItem(worker._id)} src={trash} alt="" />
+                    <img onClick={() => handleDelete(worker._id)} src={trash} alt="" />
                 </td>
               </tr>
             ))

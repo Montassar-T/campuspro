@@ -22,6 +22,15 @@ export const deleteWorker = createAsyncThunk(
   }
 );
 
+
+export const addWorker = createAsyncThunk(
+  "workers/addWorker",
+  async ()=>{
+    const response = await addWorker();
+    return response;
+  }
+)
+
 const workersSlice = createSlice({
   name: "workers",
   initialState,

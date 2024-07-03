@@ -45,4 +45,9 @@ const deleteWork = async (id)=>{
     }
 
 }
+
+
+const addWorker = async()=>{
+    const response = await api.post(`workers/add`)
+}
 export {fetchListWorkers, login, fetchListAbsence, deleteWork}
