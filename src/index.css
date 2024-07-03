@@ -1,3 +1,22 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* body{
+    margin: 0;
+    padding: 0;
+    max-height: 100vh;
+    overflow: hidden;
+} */
+
+
+img{
+    height: 20px;
+    aspect-ratio: 1;
+}
+
+
+
+thead th{
+    text-align: start;
+}

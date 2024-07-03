@@ -13,14 +13,15 @@ app.use(express.json())
 
 connectDB();
 
-app.use(express.static(path.join(__dirname , "public")))
 
 app.use("/auth", require("./routes/authRoutes"));
+app.use("/workers" , require('./routes/workersRoutes'))
+
+
+
 app.use("*", (req,res)=>{
     res.status(404)
-    if(req.accepts("html")){
-        res.sendfile(path.join(__dirname ,"views/404.html"))
-    }else if(req.accepts("json")){
+    if(req.accepts("json")){
         res.send({message:"404 not found"});
     }else{
 res.type("txt").send("404 not found");
