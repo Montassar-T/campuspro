@@ -11,12 +11,19 @@
 
 
 img{
-    height: 20px;
+    height: 24px;
     aspect-ratio: 1;
 }
 
 
 
-thead th{
+thead th, td {
     text-align: start;
+    padding: 16px;
+}
+
+
+
+.buttons img{
+    cursor: pointer;
 }

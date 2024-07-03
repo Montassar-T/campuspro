@@ -34,5 +34,15 @@ const   fetchListAbsence = async()=>{
         throw new Error(`Error during absences: ${error.message}`);
     }
 }
+ 
 
-export {fetchListWorkers, login, fetchListAbsence}
+const deleteWork = async (id)=>{
+    try{
+        const response = await api.delete(`/workers/delete/${id}`)
+        return response.data;
+    }catch(err){
+        throw new Error(`Error deleting worker: ${error.message}`)
+    }
+
+}
+export {fetchListWorkers, login, fetchListAbsence, deleteWork}
