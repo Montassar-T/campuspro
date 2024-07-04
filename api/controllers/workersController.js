@@ -26,8 +26,9 @@ const deleteWorker = async (req, res) => {
 };
 
 const getAll = async (req, res) => {
+  const id = req.user
   try {
-    const workers = await Worker.find().exec();
+    const workers = await Worker.find({userId : id}).exec();
     if (workers) {
       res.status(200).json({
         status: "success",

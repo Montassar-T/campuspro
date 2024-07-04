@@ -6,10 +6,11 @@ function App() {
 
   return (
     <div className="min-h-screen  min-w-full flex ">
-      <Side />
+      <Login />
+      {/* <Side />
       <div className="displayer p-8 w-full ">
         <Workers />
-      </div>
+      </div> */}
    </div>
   )
 }

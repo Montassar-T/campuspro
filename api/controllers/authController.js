@@ -1,35 +1,36 @@
-const User = require('../models/Admin');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
+const User = require("../models/Admin");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
+const login = async (req, res) => {
+  const { email, password } = req.body;
+  if (!email || !password) {
+    return res.status(400).json({ message: "All fields are required" });
+  }
+  const foundUser = await User.findOne({ email }).exec();
 
+  if (!foundUser) {
+    return res.status(401).json({ message: "User does not exist" });
+  }
 
-const login = async (req , res)=>{
-    const {email , password} = req.body;
-    if(!email || !password){
-        return res.status(400).json({message:"All fields are required"});
-    }
-    const foundUser = await User.findOne({email}).exec();
+  const match = await bcrypt.compare(password, foundUser.password);
+  if (!match) {
+    return res.status(401).json({
+      success: false,
+      message: "Wrong password",
+    });
+  }
 
-
-
-    if(!foundUser){
-        return res.status(401).json({message:'User does not exist'});
-    }
-
-    const match = await  bcrypt.compare(password, foundUser.password );
-    if(!match){return res.status(401).json({message:"Wrong password"})}
-
-    console.log('loggggged')
-    const accesToken = jwt.sign(
-        {
-            UserInfo:{
-                id: foundUser._id,
-            },
-        },
-        process.env.ACCES_TOKEN_SECRET,
-        {expiresIn:"1h"},
-    );
+  const accessToken = jwt.sign(
+    {
+      UserInfo: {
+        id: foundUser._id,
+      },
+    },
+    process.env.ACCES_TOKEN_SECRET,
+    { expiresIn: "1h" }
+  );
+  /*
     const refreshToken = jwt.sign(
         {
             UserInfo:{
@@ -45,10 +46,11 @@ const login = async (req , res)=>{
         sameSite: 'None', //cross site cookie
         maxAge: 1000 * 60 *60 *24 *7
     })
-    res.json({
-        accesToken,
-        email:foundUser.email,
-    }); 
+        */
+  res.json({
+    success: true,
+    accessToken,
+  });
 };
 
-module.exports = {login}
+module.exports = { login };

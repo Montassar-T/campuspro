@@ -2,6 +2,7 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
+import { login } from "../services/api";
 
 const Login = () => {
     
@@ -17,10 +18,13 @@ const Login = () => {
   );
 
 
-  const onSubmit =({email, password})=>{
-    console.log(email);
-    console.log(isValid);
-    reset()
+  const onSubmit = async ({email, password})=>{
+      const response = await login(email,password);
+      console.log(response)
+      if(response.success == true){
+        localStorage.setItem('accessToken', response.accessToken)
+        reset()
+      }
   }
 
   return (
@@ -57,7 +61,7 @@ const Login = () => {
             disabled={!isValid}
             type="submit"
             value="Login"
-            className="bg-green-600 submit disabled:bg-green-400  text-white font-bold m-auto    py-2 mb-4 mt-6 px-4 rounded "
+            className="bg-green-600 submit disabled:bg-green-400  text-white font-bold m-auto cursor-pointer   py-2 mb-4 mt-6 px-4 rounded "
           />
         </form>
       </div>

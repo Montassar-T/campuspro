@@ -9,7 +9,9 @@ const api = axios.create({
 const login= async (email, password)=>{
     try {
         const response = await api.post('/auth/login', { email, password });
-        return response;
+        console.log(response.data)
+        return response.data;
+
     } catch (error) {
         throw new Error(`Error during login: ${error.message}`);
     }
@@ -19,7 +21,6 @@ const login= async (email, password)=>{
 const   fetchListWorkers = async()=>{
     try{
         const response = await api.get('/workers');
-        console.log(response.data);
         return response.data;
     }catch(err){
         throw new Error(`Error during fetching workers: ${error.message}`);

@@ -20,6 +20,10 @@ const workerSchema = new mongoose.Schema({
     fonction:{
         type: String,
         required:true
+    },
+    userId:{
+        type: String,
+        required:true
     }
 },{timestamps:true , collection:'workers'})
 
