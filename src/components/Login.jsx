@@ -22,7 +22,7 @@ const Login = () => {
       const response = await login(email,password);
       console.log(response)
       if(response.success == true){
-        localStorage.setItem('accessToken', response.accessToken)
+        Cookies.setItem('accessToken', response.accessToken)
         reset()
       }
   }
