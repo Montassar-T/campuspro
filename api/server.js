@@ -7,12 +7,14 @@ const path = require("path");
 const mongoose = require("mongoose");
 const connectDB = require("./config/dbConn");
 const PORT = process.env.PORT  ;
+const cookieParser = require('cookie-parser'); // Import cookie-parser module
+
 app.use(cors(corsOptions));
-// app.use(cookieParser());
+app.use(cookieParser());
 app.use(express.json())
 
 connectDB();
-
+console.log('reach')
 
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/workers" , require('./routes/workersRoutes'))

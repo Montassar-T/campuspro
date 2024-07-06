@@ -8,7 +8,7 @@ const corsOptions = {
             callback(new Error("Denied by cors"))
         }
     },
-    Credential: true, //allow the sent of cookies
+    credentials: true, //allow the sent of cookies
     optionsSuccessStatus: 200
 
    

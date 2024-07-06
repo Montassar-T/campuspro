@@ -2,10 +2,14 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import z from 'zod'
 import { zodResolver } from "@hookform/resolvers/zod";
-import { login } from "../services/api";
+import Cookies from 'js-cookie';
+import { useNavigate } from "react-router-dom";
+import { useLoginMutation } from "../features/auth/authApiSlice";
 
 const Login = () => {
-    
+  const navigate = useNavigate();
+  const [login, { isError, isLoading, error }] = useLoginMutation();
+
         const User = z.object({
             email : z.string().email({message:'Email invalid'}),
             password : z.string().min(6,{message:'Password invalid'})
@@ -19,10 +23,12 @@ const Login = () => {
 
 
   const onSubmit = async ({email, password})=>{
-      const response = await login(email,password);
-      console.log(response)
-      if(response.success == true){
-        Cookies.setItem('accessToken', response.accessToken)
+       const {data} = await login({email,password});
+
+      
+      if(data.success == true){
+        Cookies.set('accessToken', data.accessToken)
+        navigate('/workers')
         reset()
       }
   }

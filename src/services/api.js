@@ -1,10 +1,25 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 const baseURL = 'http://localhost:4200';
 
 const api = axios.create({
     baseURL,
+    
 });
+
+api.interceptors.request.use(
+    (config) => {
+      const token = Cookies.get('accessToken');
+      if (token) {
+        config.headers.Authorization = `Bearer ${token}`;
+      }
+      return config;
+    },
+    (error) => {
+      return Promise.reject(error);
+    }
+  );
 
 const login= async (email, password)=>{
     try {

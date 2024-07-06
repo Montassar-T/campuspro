@@ -30,7 +30,7 @@ const login = async (req, res) => {
     process.env.ACCES_TOKEN_SECRET,
     { expiresIn: "1h" }
   );
-  /*
+  
     const refreshToken = jwt.sign(
         {
             UserInfo:{
@@ -46,11 +46,24 @@ const login = async (req, res) => {
         sameSite: 'None', //cross site cookie
         maxAge: 1000 * 60 *60 *24 *7
     })
-        */
+        
   res.json({
     success: true,
     accessToken,
   });
 };
 
-module.exports = { login };
+
+const logout = async (req,res)=>{
+  const cookies =req.cookies;
+  if(!cookies?.jwt) return res.sendStatus(204);
+  res.clearCookie('jwt',{
+      sameSite: 'None', //cross site cookie
+    httpOnly:true,
+    secure:true,
+  })
+  res.status(200).json({message:'Cookie cleared'});
+
+}
+
+module.exports = { login, logout };

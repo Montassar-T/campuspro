@@ -1,16 +1,13 @@
-import Login from "./components/Login"
-import Side from "./components/Side"
-import Workers from "./components/Workers"
+import { Outlet } from "react-router-dom"
+
 
 function App() {
 
   return (
+    
     <div className="min-h-screen  min-w-full flex ">
-      <Login />
-      {/* <Side />
-      <div className="displayer p-8 w-full ">
-        <Workers />
-      </div> */}
+      
+      <Outlet/>
    </div>
   )
 }
