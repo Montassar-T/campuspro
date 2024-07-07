@@ -5,17 +5,17 @@ import Table from "./Table";
 import { deleteWorker } from "../features/workers";
 
 const Workers = () => {
-  // const dispatch = useDispatch();
-  // // const { workers } = useSelector((state) => state.workers);
+  const dispatch = useDispatch();
+  const { workers } = useSelector((state) => state.workers);
 
-  // useEffect(() => {
-  //   dispatch(fetchWorkers());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(fetchWorkers());
+  }, [dispatch]);
 
   return (
     <div className="container p-8">
       <h1 className="font-bold text-2xl">Workers</h1>
-      {/* <Table data={workers} deleteItem={deleteWorker} dispatch={dispatch} /> */}
+      <Table data={workers} deleteItem={deleteWorker} dispatch={dispatch} />
     </div>
   );
 };

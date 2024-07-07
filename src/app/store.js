@@ -9,9 +9,9 @@ import { setupListeners } from '@reduxjs/toolkit/query';
 const store = configureStore({
     reducer:{
 
-        [apiSlice.reducerPath] : apiSlice.reducer
-        // workers: workersReducer,
-        // absences: absencesReducer,
+        [apiSlice.reducerPath] : apiSlice.reducer,
+        workers: workersReducer,
+        absences: absencesReducer,
     },
     middleware : (getDefaultMiddleware) =>{
         return getDefaultMiddleware().concat(apiSlice.middleware)

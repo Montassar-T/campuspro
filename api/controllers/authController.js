@@ -53,6 +53,30 @@ const login = async (req, res) => {
   });
 };
 
+const refresh = (req, res) => {
+  const cookies = req.cookies;
+  if (!cookies?.jwt) res.status(401).json({ message: 'Unauthorized' });
+  const refreshToken = cookies.jwt;
+  jwt.verify(
+    refreshToken,
+    process.env.REFRESH_TOKEN_SECRET,
+    async (err, decoded) => {
+      if (err) return res.status(403).json({ message: 'Forbidden' });
+      const foundUser = await User.findById(decoded.UserInfo.id).exec();
+      if (!foundUser) return res.status(401).json({ message: 'Unauthorized' });
+      const accessToken = jwt.sign(
+        {
+          UserInfo: {
+            id: foundUser._id,
+          },
+        },
+        process.env.ACCESS_TOKEN_SECRET,
+        { expiresIn: 10 }
+      );
+      res.json({ accessToken });
+    }
+  );
+};
 
 const logout = async (req,res)=>{
   const cookies =req.cookies;
@@ -66,4 +90,4 @@ const logout = async (req,res)=>{
 
 }
 
-module.exports = { login, logout };
+module.exports = { login, logout, refresh };
