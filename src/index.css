@@ -27,8 +27,3 @@ thead th, td {
 .buttons img{
     cursor: pointer;
 }
-
-
-.filter{
-    border: 1px solid black;
-}

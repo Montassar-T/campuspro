@@ -1,21 +1,43 @@
-import React, { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { fetchWorkers } from "../features/workers";
+import React, { useEffect, useState } from "react";
+import {  useDeleteWorkerMutation, useFetchWorkersMutation } from "../features/workers";
 import Table from "./Table";
-import { deleteWorker } from "../features/workers";
 
 const Workers = () => {
-  const dispatch = useDispatch();
-  const { workers } = useSelector((state) => state.workers);
+  // const dispatch = useDispatch();
+  // const { workers } = useSelector((state) => state.workers);
+  const [fetchWorkers] = useFetchWorkersMutation();
+  const [deleteWorker] = useDeleteWorkerMutation();
 
-  useEffect(() => {
-    dispatch(fetchWorkers());
-  }, [dispatch]);
+  const [workers, setWorkers] = useState([]);
+
+
+  
+    useEffect(() => {
+      const fetchData = async () => {
+        try {
+         
+            const {data} = await fetchWorkers();
+            setWorkers(data.data);
+          
+        } catch (error) {
+          console.error("Failed to fetch workers:", error);
+        
+      };
+    
+    }
+    fetchData();
+    }, [fetchWorkers]);
+    
+
+
 
   return (
     <div className="container p-8">
-      <h1 className="font-bold text-2xl">Workers</h1>
-      <Table data={workers} deleteItem={deleteWorker} dispatch={dispatch} />
+    <h1 className="font-bold text-2xl">Workers</h1>
+    <Table data={workers} deleteItem={deleteWorker} setData={setWorkers}  />
+
+
+
     </div>
   );
 };
