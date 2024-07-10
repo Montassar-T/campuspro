@@ -44,9 +44,9 @@ const absenceApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deleteAbsence: builder.mutation({
-      query: (id) => ({
+      query: ({id}) => ({
         url: `/absence/delete/${id}`,
-        method: "POST",
+        method: "DELETE",
       }),
     }),
     addAbsence: builder.mutation({

@@ -4,6 +4,7 @@ const absenceController = require("../controllers/absenceController")
 
 
 router.route('/').get(absenceController.getAll)
+router.route('/delete/:id').delete(absenceController.deleteAbsence)
 
 
 

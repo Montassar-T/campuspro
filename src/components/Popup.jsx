@@ -49,11 +49,12 @@ export const Popup = ({
   };
 
   useEffect(() => {
-    if (editingItem && editingItem._id) {
+    if (editingItem ) {
       console.log(formConfig);
       formConfig.map((con) => {
         const attrName = con.name;
-        setValue(attrName, attrName || "");
+        console.log(editingItem)
+        setValue(attrName, editingItem[attrName] || "");
       });
     }
   }, [setValue]);
@@ -70,6 +71,7 @@ export const Popup = ({
         </div>
         <form className="  p-8 grid  gap-2 " onSubmit={handleSubmit(onSubmit)}>
           {formConfig.map((con) => {
+            let attrName = con.name;
             return (
               <div
                 className={`input-container col-span-${con.colSpan} flex flex-col`}
@@ -86,7 +88,6 @@ export const Popup = ({
                 ) : (
                     <select 
                     className="p-1.5 rounded-sm"
-
                   >
                     {listW.map(worker =>{
                            
@@ -96,9 +97,9 @@ export const Popup = ({
                      </select>
                 )}
 
-                {errors.firstName && (
-                  <p className="text-red-500">{errors.firstName.message}</p>
-                )}
+                {errors.attrName && (
+                  <p className="text-red-500">{errors[attrName]}</p>
+                )} 
               </div>
             );
           })}

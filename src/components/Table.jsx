@@ -39,8 +39,11 @@ const Table = ({
   };
 
   const handleDelete = async (id) => {
+    console.log(id)
+    
     try {
-      await deleteItem({ id });
+      const dee =await deleteItem({ id });
+      console.log(dee)
       setData((prev) => {
         return prev.filter((item) => item._id != id);
       });
@@ -69,7 +72,9 @@ const Table = ({
     });
   });
   const handlePopup = () => {
+    setEditingItem(null)
     setDisplayPopup((prev) => !prev);
+
   };
   return (
     <div className="wrapper mt-8">
