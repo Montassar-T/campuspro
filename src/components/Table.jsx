@@ -5,22 +5,29 @@ import { useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Popup } from "./Popup";
 
-const Table = ({ data, deleteItem, setData }) => {
+const Table = ({ data, deleteItem, setData, addItem, zodObject, editItem }) => {
   const [filter, setFilter] = useState("");
-  const [addItem, setAdd] = useState(false);
+  const [dispalayPopup, setDisplayPopup] = useState(false);
 
-  const toastOne = () => {
-    toast("Here is your toast.");
+  const [editingItem, setEditingItem] = useState(null);
+
+  const handleEdit = (item) => {
+    setEditingItem(item);
+    console.log("fffffffffff", editingItem);
+    setDisplayPopup(true);
   };
 
   const handleDelete = async (id) => {
-    toastOne();
     try {
       await deleteItem({ id });
       setData((prev) => {
         return prev.filter((item) => item._id != id);
       });
-      console.log("item deleted successfully");
+
+      toast.success("item deleted successfully", {
+        position: "top-right",
+        className: "toast",
+      });
     } catch (error) {
       console.error("Error deleting item:", error);
     }
@@ -29,7 +36,9 @@ const Table = ({ data, deleteItem, setData }) => {
   const handleFilter = (e) => {
     setFilter(e.target.value);
   };
-  const headers = Object.keys(data[0] || []).filter((attr) => attr != "_id");
+  const headers = Object.keys(data[0] || []).filter(
+    (attr) => !["_id", "createdAt", "updatedAt"].includes(attr)
+  );
 
   const filteredData = data.filter((item) => {
     const keys = headers;
@@ -38,9 +47,8 @@ const Table = ({ data, deleteItem, setData }) => {
       return item[key].toLowerCase().includes(filter.toLowerCase());
     });
   });
-
-  const handleAdd = () => {
-    setAdd((prev) => !prev);
+  const handlePopup = () => {
+    setDisplayPopup((prev) => !prev);
   };
   return (
     <div className="wrapper mt-8">
@@ -55,7 +63,7 @@ const Table = ({ data, deleteItem, setData }) => {
         </div>
         <div
           className="button bg-green-600 p-2 gap-2 rounded-xl flex content-center text-white cursor-pointer"
-          onClick={handleAdd}
+          onClick={handlePopup}
         >
           <span>Add</span>
           <img src={add} alt="" />
@@ -63,7 +71,7 @@ const Table = ({ data, deleteItem, setData }) => {
       </div>
       <table className="table-auto   w-full ">
         <thead className="bg-zinc-900   text-white">
-          <tr className="rounded">
+          <tr>
             {headers.map((header) => {
               return (
                 <th key={header}>
@@ -86,7 +94,7 @@ const Table = ({ data, deleteItem, setData }) => {
                   return <td>{item[header]}</td>;
                 })}
                 <td className="flex gap-2 buttons">
-                  <img src={edit} alt="" />
+                  <img src={edit} alt="edit" onClick={() => handleEdit(item)} />
                   <img
                     onClick={() => handleDelete(item._id)}
                     src={trash}
@@ -103,7 +111,18 @@ const Table = ({ data, deleteItem, setData }) => {
         </tbody>
       </table>
 
-    { addItem && <Popup handleAdd={handleAdd}/>}
+      {dispalayPopup && (
+        <Popup
+          handlePopup={handlePopup}
+          addItem={addItem}
+          zodObject={zodObject}
+          editingItem={editingItem}
+          setEditingItem={setEditingItem}
+          editItem={editItem}
+          setDisplayPopup={setDisplayPopup}
+          setData={setData}
+        />
+      )}
     </div>
   );
 };

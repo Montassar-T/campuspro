@@ -1,8 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import z from 'zod'
+import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../features/auth/authApiSlice";
 
@@ -10,28 +10,29 @@ const Login = () => {
   const navigate = useNavigate();
   const [login, { isError, isLoading, error }] = useLoginMutation();
 
-        const User = z.object({
-            email : z.string().email({message:'Email invalid'}),
-            password : z.string().min(6,{message:'Password invalid'})
-        })
-  const { register, handleSubmit, reset, formState:{errors, isValid} } = useForm(
-    {
-        mode:'onChange',
-        resolver : zodResolver(User)
+  const User = z.object({
+    email: z.string().email({ message: "Email invalid" }),
+    password: z.string().min(6, { message: "Password invalid" }),
+  });
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid },
+  } = useForm({
+    mode: "onChange",
+    resolver: zodResolver(User),
+  });
+
+  const onSubmit = async ({ email, password }) => {
+    const { data } = await login({ email, password });
+
+    if (data.success == true) {
+      Cookies.set("accessToken", data.accessToken);
+      navigate("/workers");
+      reset();
     }
-  );
-
-
-  const onSubmit = async ({email, password})=>{
-       const {data} = await login({email,password});
-
-      
-      if(data.success == true){
-        Cookies.set('accessToken', data.accessToken)
-        navigate('/workers')
-        reset()
-      }
-  }
+  };
 
   return (
     <div className="container min-w-full items-center justify-center flex ">
@@ -50,7 +51,7 @@ const Login = () => {
           <div className="inputWrapper flex flex-col  w-fit ">
             <label className="mb-2 text-white">Email</label>
             <input
-            {...register('email')}
+              {...register("email")}
               type="email"
               className="w-96 border h-10 rounded-md ps-2 outline-none"
             />
@@ -58,7 +59,7 @@ const Login = () => {
           <div className="inputWrapper flex flex-col  w-fit ">
             <label className="mb-2 text-white">Password</label>
             <input
-            {...register('password')}
+              {...register("password")}
               type="password"
               className="w-96 border h-10 rounded-md ps-2 outline-none"
             />

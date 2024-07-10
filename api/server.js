@@ -18,6 +18,7 @@ console.log('reach')
 
 app.use("/auth", require("./routes/authRoutes"));
 app.use("/workers" , require('./routes/workersRoutes'))
+app.use("/absence" , require('./routes/absenceRoutes'))
 
 
 

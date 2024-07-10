@@ -71,7 +71,7 @@ export const WorkersApiSlice = apiSlice.injectEndpoints({
       query: (worker) => ({
         url: "/workers/add",
         method: "POST",
-        body: worker
+        body: worker,
       }),
     }),
     deleteWorker: builder.mutation({
@@ -80,8 +80,19 @@ export const WorkersApiSlice = apiSlice.injectEndpoints({
         method: "DELETE",
       }),
     }),
+    editWorker: builder.mutation({
+      query: (worker) => ({
+        url: "/workers/edit",
+        method: "POST",
+        body: worker,
+      }),
+    }),
   }),
 });
 
-export const { useFetchWorkersMutation, useDeleteWorkerMutation } =
-  WorkersApiSlice;
+export const {
+  useFetchWorkersMutation,
+  useDeleteWorkerMutation,
+  useAddWorkerMutation,
+  useEditWorkerMutation,
+} = WorkersApiSlice;

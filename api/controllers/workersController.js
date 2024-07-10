@@ -40,4 +40,46 @@ const getAll = async (req, res) => {
   }
 };
 
-module.exports = { getAll, deleteWorker };
+
+const addWorker = async (req,res) =>{
+  const {lastName,firstName,cin,fonction} =  req.body
+  try{
+    const newWorker = new Worker({lastName,firstName,cin,fonction});
+    const saved = await newWorker.save();
+    if(saved){
+      res.status(200).json({data:newWorker})
+    }
+
+  }catch(err){
+    console.log(err)
+    res.status(500).json({message: "Server error"})
+  }
+}
+
+const editWorker = async(req,res)=>{
+  const {_id, lastName, firstName, cin, fonction}=  req.body;
+  try{
+    let worker = await Worker.findById(_id).exec();
+    if(!worker){
+      res.status(404).json({message:"Worker not found"})
+    }
+    else{
+      worker.lastName = lastName;
+      worker.firstName=firstName;
+      worker.cin=cin;
+      worker.fonction=fonction;
+      const saved = await worker.save()
+      if(saved){
+        res.status(200).json({message:"Worker updated successfuly"});
+
+      }else{
+        res.status(500).json({message:"Error updating worker"})
+      }
+    }
+  }catch(err){
+    console.log(err);
+    res.status(500).json({message: "Server error"})
+  }
+}
+
+module.exports = { getAll, deleteWorker, addWorker, editWorker };

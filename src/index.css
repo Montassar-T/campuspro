@@ -27,3 +27,6 @@ thead th, td {
 .buttons img{
     cursor: pointer;
 }
+
+.toast{
+    margin-right: 40px;}
