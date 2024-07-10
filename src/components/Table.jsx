@@ -1,19 +1,40 @@
 import add from "../assets/icons/add-circle.svg";
 import trash from "../assets/icons/trash.svg";
 import edit from "../assets/icons/edit.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import { Popup } from "./Popup";
+import { format } from "date-fns";
+import { useFetchWorkersQuery } from "../features/workers";
 
-const Table = ({ data, deleteItem, setData, addItem, zodObject, editItem }) => {
+const Table = ({
+  data,
+  deleteItem,
+  setData,
+  addItem,
+  zodObject,
+  editItem,
+  formConfig,
+}) => {
   const [filter, setFilter] = useState("");
   const [dispalayPopup, setDisplayPopup] = useState(false);
 
   const [editingItem, setEditingItem] = useState(null);
 
+  const { data: listOfWorkers } = useFetchWorkersQuery();
+
+  const [listW, setListW] = useState([]);
+
+  useEffect(() => {
+    if (listOfWorkers) {
+      
+      setListW(listOfWorkers.data);
+      console.log("listw",listW);
+    }
+  });
+
   const handleEdit = (item) => {
     setEditingItem(item);
-    console.log("fffffffffff", editingItem);
     setDisplayPopup(true);
   };
 
@@ -75,10 +96,11 @@ const Table = ({ data, deleteItem, setData, addItem, zodObject, editItem }) => {
             {headers.map((header) => {
               return (
                 <th key={header}>
-                  {(header.charAt(0).toUpperCase() + header.slice(1)).replace(
-                    /([a-z])([A-Z])/g,
-                    "$1 $2"
-                  )}
+                  {header === "workerId"
+                    ? "Worker"
+                    : (
+                        header.charAt(0).toUpperCase() + header.slice(1)
+                      ).replace(/([a-z])([A-Z])/g, "$1 $2")}
                 </th>
               );
             })}
@@ -91,7 +113,25 @@ const Table = ({ data, deleteItem, setData, addItem, zodObject, editItem }) => {
             filteredData.map((item) => (
               <tr key={item._id}>
                 {headers.map((header) => {
-                  return <td>{item[header]}</td>;
+                  if (header != "workerId") {
+                    return (
+                      <td>
+                        {header == "date"
+                          ? format(new Date(item[header]), "dd-MM-yyyy")
+                          : item[header]}
+                      </td>
+                    );
+                  } else {
+                    return (
+                      <td>
+                        {listW.map((worker) => {
+                          if (worker._id == item[header]) {
+                            return worker.firstName+' '+ worker.lastName
+                          }
+                        })}
+                      </td>
+                    );
+                  }
                 })}
                 <td className="flex gap-2 buttons">
                   <img src={edit} alt="edit" onClick={() => handleEdit(item)} />
@@ -121,6 +161,8 @@ const Table = ({ data, deleteItem, setData, addItem, zodObject, editItem }) => {
           editItem={editItem}
           setDisplayPopup={setDisplayPopup}
           setData={setData}
+          formConfig={formConfig}
+          listW={listW}
         />
       )}
     </div>

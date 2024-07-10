@@ -61,7 +61,7 @@ import { apiSlice } from "../app/api/apiSlice";
 
 export const WorkersApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    fetchWorkers: builder.mutation({
+    fetchWorkers: builder.query({
       query: () => ({
         url: "/workers",
         method: "GET",
@@ -91,7 +91,7 @@ export const WorkersApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
-  useFetchWorkersMutation,
+  useFetchWorkersQuery,
   useDeleteWorkerMutation,
   useAddWorkerMutation,
   useEditWorkerMutation,

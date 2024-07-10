@@ -33,23 +33,42 @@
 
 // export default absenceSlice.reducer;
 
-
 import { apiSlice } from "../app/api/apiSlice";
 
-
 const absenceApiSlice = apiSlice.injectEndpoints({
-  endpoints:(builder)=>({
+  endpoints: (builder) => ({
     getAbsences: builder.query({
-      query:()=>({
-        url:'/absence',
-        method: 'GET'
-      })
-     
+      query: () => ({
+        url: "/absence",
+        method: "GET",
+      }),
+    }),
+    deleteAbsence: builder.mutation({
+      query: (id) => ({
+        url: `/absence/delete/${id}`,
+        method: "POST",
+      }),
+    }),
+    addAbsence: builder.mutation({
+      query: (absence) => ({
+        url: "/absence/add",
+        method: "POST",
+        body: absence,
+      }),
+    }),
+    editAbsence: builder.mutation({
+      query: (absence) => ({
+        url: `/absence/edit`,
+        method: "POST",
+        body: absence,
+      }),
+    }),
+  }),
+});
 
-  })
-})
-
-})
-
-
-export const  {useGetAbsencesQuery} = absenceApiSlice;
+export const {
+  useGetAbsencesQuery,
+  useDeleteAbsenceMutation,
+  useAddAbsenceMutation,
+  useEditAbsenceMutation,
+} = absenceApiSlice;

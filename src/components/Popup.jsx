@@ -11,7 +11,9 @@ export const Popup = ({
   editItem,
   setEditingItem,
   setDisplayPopup,
-  setData
+  setData,
+  formConfig,
+  listW
 }) => {
   const {
     register,
@@ -33,7 +35,9 @@ export const Popup = ({
       } else {
         data._id = editingItem._id;
         await editItem(data);
-        setData((prev) => prev.map((item) => (item._id === data._id ? data : item)));
+        setData((prev) =>
+          prev.map((item) => (item._id === data._id ? data : item))
+        );
 
         setEditingItem(null);
         reset();
@@ -46,12 +50,13 @@ export const Popup = ({
 
   useEffect(() => {
     if (editingItem && editingItem._id) {
-      setValue("firstName", editingItem.firstName || "");
-      setValue("lastName", editingItem.lastName || "");
-      setValue("cin", editingItem.cin || "");
-      setValue("fonction", editingItem.fonction || "");
+      console.log(formConfig);
+      formConfig.map((con) => {
+        const attrName = con.name;
+        setValue(attrName, attrName || "");
+      });
     }
-  }, [ setValue]);
+  }, [setValue]);
 
   return (
     <div className="popup  absolute inset-0 conte flex items-center justify-center">
@@ -64,7 +69,42 @@ export const Popup = ({
           <img src={close} className="" alt="" />
         </div>
         <form className="  p-8 grid  gap-2 " onSubmit={handleSubmit(onSubmit)}>
-          <div className="input-container col-span-6 flex flex-col">
+          {formConfig.map((con) => {
+            return (
+              <div
+                className={`input-container col-span-${con.colSpan} flex flex-col`}
+              >
+                <label htmlFor="">{con.label}</label>
+
+                {con.type != "select" ? (
+                  <input
+                    className="p-1.5 rounded-sm"
+                    type={con.type}
+                    placeholder={con.placeholder}
+                    {...register(con.name)}
+                  />
+                ) : (
+                    <select 
+                    className="p-1.5 rounded-sm"
+
+                  >
+                    {listW.map(worker =>{
+                           
+                            return  <option value={worker._id}>{worker.firstName+' '+ worker.lastName}</option>
+                    
+                    })}
+                     </select>
+                )}
+
+                {errors.firstName && (
+                  <p className="text-red-500">{errors.firstName.message}</p>
+                )}
+              </div>
+            );
+          })}
+
+          {/* <div className="input-container col-span-6 flex flex-col">
+
             <label htmlFor="">First Name</label>
             <input
               className="p-1.5 rounded-sm"
@@ -109,7 +149,7 @@ export const Popup = ({
             {errors.fonction && (
               <p className="text-red-500">{errors.fonction.message}</p>
             )}
-          </div>
+          </div> */}
           <input
             // disabled={!isValid}
             type="submit"

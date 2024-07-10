@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import {  useAddWorkerMutation, useDeleteWorkerMutation, useEditWorkerMutation, useFetchWorkersMutation } from "../features/workers";
+import {  useAddWorkerMutation, useDeleteWorkerMutation, useEditWorkerMutation, useFetchWorkersQuery } from "../features/workers";
 import Table from "./Table";
 import z from "zod";
+
+import { workerFormConfig } from "../config/workerFormConfig";
 
 const Workers = () => {
   // const dispatch = useDispatch();
   // const { workers } = useSelector((state) => state.workers);
-  const [fetchWorkers] = useFetchWorkersMutation();
+  const {data: workersData} = useFetchWorkersQuery();
   const [deleteWorker] = useDeleteWorkerMutation();
   const [addWorker] = useAddWorkerMutation();
   const [editWorker] = useEditWorkerMutation();
@@ -27,20 +29,10 @@ const Workers = () => {
   });
   
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        
-        const {data} = await fetchWorkers();
-        setWorkers(data.data);
-        
-      } catch (error) {
-        console.error("Failed to fetch workers:", error);
-        
-      };
-      
-    }
-    fetchData();
-  }, [fetchWorkers]);
+   if(workersData){
+    setWorkers(workersData.data)
+   }
+  }, [workersData]);
   
   
 
@@ -51,7 +43,7 @@ const Workers = () => {
   return (
     <div className="container p-8">
     <h1 className="font-bold text-2xl">Workers</h1>
-    <Table data={workers} deleteItem={deleteWorker} addItem={handleAdd} setData={setWorkers} editItem={editWorker} zodObject={Worker}  />
+    <Table data={workers} deleteItem={deleteWorker} addItem={handleAdd} setData={setWorkers} editItem={editWorker} zodObject={Worker} formConfig={workerFormConfig}  />
 
 
 
