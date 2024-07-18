@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import close from "../assets/icons/add.svg";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { date } from "zod";
+import { format } from "date-fns";
 
 export const Popup = ({
   handlePopup,
@@ -20,13 +22,14 @@ export const Popup = ({
     reset,
     handleSubmit,
     setValue,
-    formState: { isValid, errors },
+    formState: {  errors },
   } = useForm({
     mode: "onChange",
     resolver: zodResolver(zodObject),
   });
 
   const onSubmit = async (data) => {
+    console.log("clicked");
     try {
       if (!editingItem) {
         await addItem(data);
@@ -50,11 +53,17 @@ export const Popup = ({
 
   useEffect(() => {
     if (editingItem ) {
-      console.log(formConfig);
       formConfig.map((con) => {
-        const attrName = con.name;
-        console.log(editingItem)
-        setValue(attrName, editingItem[attrName] || "");
+
+        if(con.type === "date") {
+          console.log(format(new Date(editingItem.date) , "dd-MM-yyyy"))
+          const formatedDate = format(new Date(editingItem.date) , 'yyyy-MM-dd')
+          console.log(formatedDate)
+          setValue('date', formatedDate)
+        }else
+        {const attrName = con.name;
+
+        setValue(attrName, editingItem[attrName] || "");}
       });
     }
   }, [setValue]);
@@ -85,9 +94,11 @@ export const Popup = ({
                     placeholder={con.placeholder}
                     {...register(con.name)}
                   />
+                
                 ) : (
                     <select 
                     className="p-1.5 rounded-sm"
+                    {...register(con.name)}
                   >
                     {listW.map(worker =>{
                            
@@ -97,9 +108,9 @@ export const Popup = ({
                      </select>
                 )}
 
-                {errors.attrName && (
-                  <p className="text-red-500">{errors[attrName]}</p>
-                )} 
+{errors[con.name]?.message && (
+            <p className="text-red-500">{errors[con.name].message}</p>
+          )}
               </div>
             );
           })}

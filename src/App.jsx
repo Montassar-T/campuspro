@@ -8,6 +8,8 @@ function App() {
     <div className="min-h-screen  min-w-full flex ">
       
       <Outlet/>
+
+      
       <Toaster />
    </div>
   )

@@ -23,13 +23,15 @@ const Side = ()=>{
             Campus<span className="text-green-600">Pro</span>
             </div>
                 <ul className=' flex-1 mt-24'>
-                    <Link to='/workers' className='flex content-center    ps-8 hover:bg-zinc-800 p-4'>
+                    <Link to='/workers' className='flex content-center cursor-pointer   ps-8 hover:bg-zinc-800 p-4'>
                         <img src={user} alt="user icon" />
                         <span className='ms-4 text-white text-'>Workers</span>
                         
                     </Link>
-                    <Link to='/absences' className='flex content-center ps-8  hover:bg-zinc-800 p-4'>
+                    <Link to='/absences' className='flex content-center ps-8 cursor-pointer hover:bg-zinc-800 p-4'>
                         <img src={board} alt="user icon" />
+
+                        
                         <span className='ms-4 text-white text-'>Absences</span>
                         
                     </Link>
@@ -39,7 +41,7 @@ const Side = ()=>{
                
       
             <ul className=' flex content-end mb-12 justify-end'>
-                    <li className='flex content-center h-fit ps-8 w-full hover:bg-zinc-800 p-4' onClick={handleLogout}>
+                    <li className='flex content-center h-fit ps-8 w-full cursor-pointer hover:bg-zinc-800 p-4' onClick={handleLogout}>
                         <img src={logoutIcon} alt="" />
                         <span className='ms-4 text-white text-'>Logout</span>
 

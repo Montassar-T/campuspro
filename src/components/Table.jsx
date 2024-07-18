@@ -27,23 +27,22 @@ const Table = ({
 
   useEffect(() => {
     if (listOfWorkers) {
-      
       setListW(listOfWorkers.data);
-      console.log("listw",listW);
     }
   });
 
   const handleEdit = (item) => {
     setEditingItem(item);
+
     setDisplayPopup(true);
   };
 
   const handleDelete = async (id) => {
-    console.log(id)
-    
+    console.log(id);
+
     try {
-      const dee =await deleteItem({ id });
-      console.log(dee)
+      const dee = await deleteItem({ id });
+      console.log(dee);
       setData((prev) => {
         return prev.filter((item) => item._id != id);
       });
@@ -61,7 +60,7 @@ const Table = ({
     setFilter(e.target.value);
   };
   const headers = Object.keys(data[0] || []).filter(
-    (attr) => !["_id", "createdAt", "updatedAt"].includes(attr)
+    (attr) => !["_id", "createdAt", "updatedAt", "__v"].includes(attr)
   );
 
   const filteredData = data.filter((item) => {
@@ -72,9 +71,8 @@ const Table = ({
     });
   });
   const handlePopup = () => {
-    setEditingItem(null)
+    setEditingItem(null);
     setDisplayPopup((prev) => !prev);
-
   };
   return (
     <div className="wrapper mt-8">
@@ -131,7 +129,7 @@ const Table = ({
                       <td>
                         {listW.map((worker) => {
                           if (worker._id == item[header]) {
-                            return worker.firstName+' '+ worker.lastName
+                            return worker.firstName + " " + worker.lastName;
                           }
                         })}
                       </td>

@@ -16,7 +16,7 @@ import Cookies from "js-cookie";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route element={<App />}>
-      <Route  path="login" element={
+      <Route  path="/login" element={
               accessToken ? <Navigate to='/workers' replace /> : <Login />
             } />
       <Route element={<Wrapper />}>

@@ -18,7 +18,7 @@ const Login = () => {
     register,
     handleSubmit,
     reset,
-    formState: { errors, isValid },
+    formState: {  isValid },
   } = useForm({
     mode: "onChange",
     resolver: zodResolver(User),
@@ -40,12 +40,16 @@ const Login = () => {
         Campus<span className="text-green-600">Pro</span>
       </div>
       <div className="formContainer border  bg-zinc-900 rounded-lg px-16  py-14">
-        <div className="top mb-12 text-center">
+        <div className="top mb-10 text-center">
           <h3 className="text-3xl text-white font-medium  mb-2">Login</h3>
           <p className="text-gray-500 ">
             Please enter your login and password!
           </p>
+          {isError && (
+          <p className="text-red-500 mt-2 text-center">{error.data.message}</p>
+        )}
         </div>
+      
 
         <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="inputWrapper flex flex-col  w-fit ">
@@ -71,6 +75,7 @@ const Login = () => {
             className="bg-green-600 submit disabled:bg-green-400  text-white font-bold m-auto cursor-pointer   py-2 mb-4 mt-6 px-4 rounded "
           />
         </form>
+        
       </div>
     </div>
   );

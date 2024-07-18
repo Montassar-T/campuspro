@@ -1,10 +1,12 @@
 const Worker = require("../models/Worker");
+const Absence = require("../models/Absence");
 
 const deleteWorker = async (req, res) => {
   const { id } = req.params;
   try {
     const deleted = await Worker.deleteOne({ _id: id });
     if (deleted.deletedCount > 0) { // Check if a document was deleted
+      const deleteAbsence = await Absence.deleteMany({workerId : id})
         res.status(200).json({
           success: true,
           message: "Worker deleted successfully",
